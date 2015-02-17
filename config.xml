@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<widget id="com.ionicframework.finalproject313991" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+  <name>finalProject</name>
+  <description>
+        An Ionic Framework and Cordova project.
+    </description>
+  <author email="hi@ionicframework" href="http://ionicframework.com/">
+      Ionic Framework Team
+    </author>
+  <content src="index.html"/>
+  <access origin="*"/>
+  <preference name="webviewbounce" value="false"/>
+  <preference name="UIWebViewBounce" value="false"/>
+  <preference name="DisallowOverscroll" value="true"/>
+  <preference name="BackupWebStorage" value="none"/>
+  <preference name="fullscreen" value="true" />
+  <feature name="StatusBar">
+    <param name="ios-package" value="CDVStatusBar" onload="true"/>
+  </feature>
+  <platform name="android">
+    <icon src="drawable-ldpi/icon.png" density="ldpi" />
+    <icon src="drawable-mdpi/icon.png" density="mdpi" />
+    <icon src="drawable-hdpi/icon.png" density="hdpi" />
+    <icon src="drawable-xhdpi/icon.png" density="xhdpi" />
+
+    <!-- you can use any density that exists in the Android project -->
+    <splash src="drawable-land-hdpi/screen.png" density="land-hdpi"/>
+    <splash src="drawable-land-ldpi/screen.png" density="land-ldpi"/>
+    <splash src="drawable-land-mdpi/screen.png" density="land-mdpi"/>
+    <splash src="drawable-land-xhdpi/screen.png" density="land-xhdpi"/>
+
+    <splash src="drawable-port-hdpi/screen.png" density="port-hdpi"/>
+    <splash src="drawable-port-ldpi/screen.png" density="port-ldpi"/>
+    <splash src="drawable-port-mdpi/screen.png" density="port-mdpi"/>
+    <splash src="drawable-port-xhdpi/screen.png" density="port-xhdpi"/>
+</platform>
+  <icon src="icon.png" />
+  <preference name="SplashScreen" value="splash" />
+  <preference name="SplashScreenDelay" value="3000"/>
+  <preference name="AutoHideSplashScreen" value="false" />
+  <preference name="auto-hide-splash-screen" value="false" />
+</widget>

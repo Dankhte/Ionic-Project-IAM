@@ -1,0 +1,7 @@
+<ion-modal-view class="modal-fullscreen" ng-click="closeModal()" on-swipe-left="nextImage(index)" on-swipe-right="prevImage(index)">
+  <button class="button icon ion-chevron-left" ng-click="prevImage(index)"></button>
+  <button class="button icon ion-chevron-right" ng-click="nextImage(index)"></button>
+  <div class="modal fullscreen-image transparent">
+    <img ng-src="{{images[index]}}" class="image-modal"/>
+  </div>
+</ion-modal-view>

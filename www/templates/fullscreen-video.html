@@ -1,0 +1,26 @@
+<ion-modal-view class="modal-fullscreen" ng-click="closeModal()">
+	<div class="modal transparent fullscreen">
+	  	<video id="videoF" class="video-modal" preload="metadata" ng-src="{{videoSrc}}" ng-click="play()" webkit-playsinline></video>
+	  	<div class="controls controls-top">
+	  		<div class="con-right">
+	  			<a class="button button-icon icon ion-volume-medium icon-volume" on-tap="displayVolume()"></a>
+			  	<div class="range range-vertical">
+					<input type="range" name="volume" ng-model="data.volume" min="0" max="1" step="0.05">
+				</div>
+			</div>
+	  	</div>
+	  	<div class="controls controls-bottom">
+	  		<div class="con-center">
+		  		<div class="range">
+		  		{{data.durationPlayed}}
+					<input type="range" name="tracking" ng-model="data.tracking" min="0" max="{{video.duration}}" step="0.01">
+				{{data.durationMax}}
+				</div>
+			</div>
+		  	<button id="playbutton" ng-click="play()" class="button button-stable ion-play"></button>
+		  	<div class="con-right">
+		  		<button id="stopbutton" ng-click="closeModal()" class="button button-stable ion-stop"></button>
+		  	</div>
+		</div>
+	</div>
+</ion-modal-view>

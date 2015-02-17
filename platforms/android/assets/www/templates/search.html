@@ -1,0 +1,32 @@
+<ion-view view-title="Search">
+  <ion-content>
+    <!-- Padding-right momentaneo.-->
+	  <label class="item item-input padding-right">
+	    <input type="text" placeholder="I'm looking for ..." ng-model="filt">
+	    <button class="button button-positive icon ion-search" type="submit"></button>
+	  </label>
+
+	<div class="list">
+
+		<div class="item item-divider">
+	    	Categories
+		</div>
+
+		<a class="item item-avatar" ng-repeat="category in categories | filter: filt" href="#/app/categories/{{category.id}}">
+	    	<img src="{{category.thumb}}">
+	    	<h2>{{category.name}}</h2>
+	    	<p>{{category.description}}</p>
+	    </a>
+
+		<div class="item item-divider">
+	    	Items
+		</div>
+
+		<a class="item" ng-repeat="item in items | filter: filt" href="#/app/categories/{{item.category_id}}/{{item.id}}">
+	    	<h2>{{item.name}}</h2>
+	    	<p>{{item.description}}</p>
+	    </a>
+
+	</div>
+  </ion-content>
+</ion-view>

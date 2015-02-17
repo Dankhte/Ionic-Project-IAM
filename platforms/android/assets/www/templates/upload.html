@@ -1,0 +1,128 @@
+<ion-view view-title="Upload">
+
+	<ion-tabs class="tabs-striped tabs-top tabs-background-positive tabs-color-light tabs-icon-left">
+
+	  <ion-tab title="Category" icon="ion-pricetag">
+
+		  <!-- Upload category -->
+		<ion-view view-title="Category">
+		  	<ion-content>
+				<form>
+					<label class="item item-input">
+					<span class="input-label">Name</span>
+					<input type="text" ng-model="categoryDetails.name">
+				</label>
+				<label class="item item-input item-stacked-label">
+				    <span class="input-label">Description</span>
+					<textarea ng-model="categoryDetails.description"></textarea>
+				</label>
+
+				  <ion-scroll direction="x" class="item-horizontal-scroll" ng-controller="MediaCtrl">
+				  	<div class="div-inline" ng-repeat="image in images">
+				  		<img ng-src="{{image}}" ng-click="showImagesFullscreen($index)"/>
+				  		<input type="file" file-model="myFile"/>
+					  	<a class="button button-icon icon ion-close button-assertive button-clear" ng-click="deleteImage($index)"></a>
+					  	<p ng-hide="true">{{image}}</p>
+				    </div>
+				  </ion-scroll>
+
+				<div class="row">
+					<div class="col">
+						<button ng-click="captureImage()" class="button button-stable button-block">
+							<i class="icon ion-android-camera"></i>
+							Photo
+					    </button>
+					</div>
+					<div class="col">
+						<button ng-click="getImage()" class="button button-stable button-block">
+							<i class="icon ion-android-image"></i>
+							Gallery
+					    </button>
+					</div>
+				</div>
+				
+				<button type="submit" ng-click="checkValidityCategory()" class="button button-full button-positive">
+					Create
+				</button>
+			</form>
+
+			</ion-content>
+		</ion-view>
+	  </ion-tab>
+
+	  <ion-tab title="Item" icon="ion-document-text">
+
+	    
+	  	<!-- Upload item -->
+	  	<ion-view view-title="Item">
+		  	<ion-content>
+				<form>
+					<label class="item item-input">
+					<span class="input-label">Name</span>
+					<input type="text" ng-model="itemDetails.name">
+				</label>
+				<label class="item item-input item-select">
+				    <div class="input-label">
+				    	Category
+				    </div>
+				    <select ng-model="data.category" ng-options="category as category.name for category in categories"></select>	  
+				</label>
+				<label class="item item-input item-stacked-label">
+				    <span class="input-label">Description</span>
+					<textarea ng-model="itemDetails.description"></textarea>
+				</label>
+
+				  <ion-scroll direction="x" class="item-horizontal-scroll" ng-controller="MediaCtrl">
+				  	<div class="div-inline" ng-repeat="image in images">
+				  		<img ng-src="{{image}}" ng-click="showImagesFullscreen($index)"/>
+					  	<a class="button button-icon icon ion-close button-assertive button-clear" ng-click="deleteImage($index)"></a>
+					  	<p ng-hide="true">{{image}}</p>
+				    </div>
+				  </ion-scroll>
+
+				<div class="row">
+					<div class="col">
+						<button ng-click="captureImage()" class="button button-stable button-block">
+							<i class="icon ion-android-camera"></i>
+							Photo
+					    </button>
+					</div>
+					<div class="col">
+						<button ng-click="getImage()" class="button button-stable button-block">
+							<i class="icon ion-android-image"></i>
+							Gallery
+					    </button>
+					</div>
+				</div>
+
+				<div class="div-block" ng-controller="MediaCtrl" ng-show="videoURL">
+				  	<video id="video" preload="metadata" ng-src="{{videoURL}}" ng-click="showVideoFullscreen(videoURL)" webkit-playsinline></video>
+				  	<a class="button button-icon icon ion-close button-assertive button-clear" ng-click="deleteVideo()"></a>
+			  	</div>
+
+				<div class="row">
+					<div class="col">
+						<button ng-click="captureVideo()" class="button button-stable button-block">
+							<i class="icon ion-android-film"></i>
+							Video
+					    </button>
+					</div>
+					<div class="col">
+						<button ng-click="getVideo()" class="button button-stable button-block">
+							<i class="icon ion-android-image"></i>
+							Gallery
+					    </button>
+					</div>
+				</div>
+				
+				<button type="submit" ng-click="checkValidityItem(category)" class="button button-full button-positive">
+					Create
+				</button>
+			</form>
+
+			</ion-content>
+		</ion-view>
+	  </ion-tab>
+
+	</ion-tabs>
+</ion-view>

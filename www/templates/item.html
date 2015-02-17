@@ -1,0 +1,34 @@
+<ion-view view-title="{{item.name}}">
+  	<ion-content>  	
+  		<ion-list>
+	   		<ion-refresher pulling-text="Update {{item.name}}" pulling-icon="ion-arrow-down-a" refreshing-text="Updating..." on-refresh="updateItem()"></ion-refresher>
+			<div class="list card">
+
+				<div class="item">
+				    <h2>{{item.name}}</h2>
+				</div>
+				<div class="item item-body">
+				    <ion-scroll direction="x" class="item-horizontal-scroll" ng-controller="MediaCtrl">
+					  	<div class="div-inline" ng-repeat="image in images">
+					  		<img src="{{image}}" class="img-big" ng-click="showImagesFullscreen($index)"/>
+					    </div>
+					</ion-scroll>
+					<!-- Video
+					<div class="div-block" ng-if="item.video" ng-controller="MediaCtrl">
+					  	<video id="video" preload="metadata" ng-src="{{item.video}}" on-tap="showVideoFullscreen(videoURL)" webkit-playsinline></video>
+				  	</div>
+				  	-->
+				    <p>{{item.description}}</p>
+				</div>
+				<div class="item tabs tabs-icon-left">
+				    <a class="tab-item" ng-click="addFavourite(item.id)">
+				    	<i ng-if="checkFavourite(item.id)" class="icon ion-ios-star"></i>
+				    	<i ng-if="!checkFavourite(item.id)" class="icon ion-ios-star-outline"></i>
+				    	Favourite
+				    </a>
+				</div>
+
+			</div>
+		</ion-list>
+ 	</ion-content>
+</ion-view>

@@ -1,0 +1,12 @@
+<ion-view view-title="{{category.name}}">
+  <ion-content>  	
+    <ion-refresher pulling-text="Update items in {{category.name}}" pulling-icon="ion-arrow-down-a" refreshing-text="Updating..." on-refresh="updateItems()"></ion-refresher>
+	<ion-list>
+	    <a class="item item-thumbnail-left" ng-repeat="item in items" href="#/app/categories/{{categoryId}}/{{item.id}}">
+	    	<img ng-repeat="image in images | filter: {item_id: item.id}" ng-src="{{image.uri}}"/>
+	    	<h2>{{item.name}}</h2>
+	    	<p>{{item.description}}</p>
+		</a>
+	</ion-list>
+  </ion-content>
+</ion-view>

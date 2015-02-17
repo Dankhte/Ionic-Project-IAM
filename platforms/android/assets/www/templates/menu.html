@@ -1,0 +1,52 @@
+<ion-side-menus enable-menu-with-back-views="false">
+  <ion-side-menu-content>
+    <ion-nav-bar class="bar-stable">
+      <ion-nav-back-button>
+      </ion-nav-back-button>
+
+      <ion-nav-buttons side="left">
+        <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+        </button>
+      </ion-nav-buttons>
+    </ion-nav-bar>
+    <ion-nav-view name="menuContent"></ion-nav-view>
+  </ion-side-menu-content>
+
+  <ion-side-menu side="left">
+    <ion-header-bar class="bar-stable">
+      <h1 class="title">Menu</h1>
+    </ion-header-bar>
+    <ion-content>
+      <ion-list>
+        <ion-item nav-clear menu-close ng-if="loginData.username" ng-click="doLogout()" class="item-icon-left">
+          <i class="icon ion-person"></i>
+          <b>{{loginData.username}}</b>
+        </ion-item>
+        <ion-item nav-clear menu-close ng-if="!loginData.username" ng-click="login()" class="item-icon-left">
+          <i class="icon ion-person"></i>
+          Login
+        </ion-item>
+        <ion-item nav-clear menu-close href="#/app/search" class="item-icon-left">
+          <i class="icon ion-search"></i>
+          Search
+        </ion-item>
+        <ion-item nav-clear menu-close href="#/app/categories" class="item-icon-left">
+          <i class="icon ion-pricetag"></i>
+          Categories
+        </ion-item>
+        <ion-item nav-clear menu-close href="#/app/favourites" class="item-icon-left">
+          <i class="icon ion-ios-star"></i>
+          Favourites
+        </ion-item>
+        <ion-item nav-clear menu-close href="#/app/upload" class="item-icon-left">
+          <i class="icon ion-upload"></i>
+          Upload
+        </ion-item>
+        <ion-item nav-clear menu-close href="#/app/countries" class="item-icon-left">
+          <i class="icon ion-help"></i>
+          Countries
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ion-side-menu>
+</ion-side-menus>
