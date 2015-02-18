@@ -9,22 +9,28 @@
 	<div class="list">
 
 		<div class="item item-divider" ng-click="showCategories = !showCategories">
+			<i class="icon ion-arrow-down-b" ng-if="!showCategories"></i>
+			<i class="icon ion-arrow-right-b" ng-if="showCategories"></i>
+			<i class="icon ion-pricetag"></i>
 	    	Categories
 		</div>
-
+			
 		<a ng-show="!showCategories" class="item item-avatar" ng-repeat="category in categories | filter: filt" href="#/app/categories/{{category.id}}">
 	    	<img src="{{category.thumb}}">
-	    	<h2>{{category.name}}</h2>
+	    	<h2 class="positive">{{category.name}}</h2>
 	    	<p>{{category.description}}</p>
 	    </a>
 
 		<div class="item item-divider" ng-click="showItems = !showItems">
+			<i class="icon ion-arrow-down-b" ng-if="!showItems"></i>
+			<i class="icon ion-arrow-right-b" ng-if="showItems"></i>
+			<i class="icon ion-document-text"></i>
 	    	Items
 		</div>
 
 		<a ng-show="!showItems" class="item item-avatar" ng-repeat="item in items | filter: filt" href="#/app/categories/{{item.category_id}}/{{item.id}}">
 			<img ng-repeat="image in images | filter: {item_id: item.id}" ng-src="{{image.uri}}">
-	    	<h2>{{item.name}}</h2>
+	    	<h2 class="calm">{{item.name}}</h2>
 	    	<p>{{item.description}}</p>
 	    </a>
 

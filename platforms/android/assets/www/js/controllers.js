@@ -1,10 +1,14 @@
 angular.module('starter.controllers', [])
 
-.controller('AppCtrl', function($scope, $ionicModal, $ionicLoading, $timeout) {
+.controller('AppCtrl', function($rootScope, $scope, $ionicModal, $ionicLoading, $timeout) {
   // Form data for the login and register modals
   $scope.loginData = {};
+  $scope.loginData.username = window.localStorage.getItem('username');
   $scope.registerData = {};
-  $scope.favourites = [];
+  $scope.favourites= [];
+  $scope.favourites = JSON.parse(window.localStorage.getItem('favourites'));
+  
+  $rootScope.images = [];
 
   // Create the login and register modal that we will use later
   $ionicModal.fromTemplateUrl('templates/login.html', {
@@ -39,6 +43,7 @@ angular.module('starter.controllers', [])
   // Perform the login action when the user submits the login form
   $scope.doLogin = function() {
     console.log('Doing login', $scope.loginData);
+    window.localStorage.setItem( 'username', $scope.loginData.username);
     $scope.closeLogin();
   };
   $scope.doLogout = function() {
@@ -75,15 +80,19 @@ angular.module('starter.controllers', [])
     }else{
       $scope.favourites.push(itemId);
     }
+    window.localStorage.setItem( 'favourites', JSON.stringify($scope.favourites));
   }
 
   $scope.checkFavourite = function(itemId){
-    for(var i=0; i < $scope.favourites.length; i++){
-      if ($scope.favourites[i] == itemId) {
-        return true;
-      };
+    var exists = false;
+    if ($scope.favourites != null) {
+      for(var i = 0; i < $scope.favourites.length; i++){
+        if ($scope.favourites[i] == itemId) {
+          exists = true;
+        };
+      }
     }
-    return false;
+    return exists;
   }
 })
 
@@ -99,31 +108,66 @@ angular.module('starter.controllers', [])
   });
 })
 
-.controller('SearchCtrl', function($scope, Category, Item) {
+.controller('SearchCtrl', function($scope, RESOURCES, Category, Item, Image) {
   Category.query(function(data) {
-    $scope.categories = data;
-  })
-  Item.query(function(data) {
-    $scope.items = data;
-  })
+      $scope.categories = data;
+        // The number of items in a category
+        for(var i = 0; i < $scope.categories.length; i++){
+          $scope.categories[i].items = 0;
+          $scope.categories[i].thumb = "./img/default.png"; // Default img
+          Item.query({category_id: $scope.categories[i].id}, function(items){
+            if (items.length) {
+              $scope.categories[items[0].category_id-1].items = items.length;
+              // The first image from the first item in the category.
+              Image.query({item_id: items[0].id}, function(images){
+                if(images.length){
+                  $scope.categories[items[0].category_id-1].thumb = RESOURCES.USERS_DOMAIN + images[0].uri;
+                }else{
+                  //$scope.categories[items[0].category_id-1].thumb = "../img/default.png";
+                }
+              })
+            };
+          });
+        }
+    });
+  $scope.images = [];
+  Item.query(function(items){
+    $scope.items = items;
+    for(var i = 0; i < $scope.items.length; i++){
+      var temp = 0;
+      Image.query({item_id: $scope.items[i].id}, function(images){
+        if (images.length) {
+          temp = images[0].item_id;
+          var l = $scope.images.push({"item_id": temp, "uri": RESOURCES.USERS_DOMAIN + images[0].uri});
+        }else{
+          temp++;
+          $scope.images.push({"item_id": temp, "uri": "./img/default.png"}); // Default img
+        }
+      })
+    }
+  });
 })
 
-.controller('CategoriesCtrl', function($scope, Category, Item) {
+.controller('CategoriesCtrl', function($scope, RESOURCES, Category, Item, Image) {
   $scope.updateCategories = function(){
     Category.query(function(data) {
       $scope.categories = data;
-        // For the number of items in a category
-        Item.query(function(items) {
-          $scope.allItems = items;
-          for(var j=0; j<$scope.categories.length; j++){
-            $scope.categories[j].items = 0;
-            for(var i=0; i<$scope.allItems.length; i++){
-              if ($scope.allItems[i].category_id == j) {
-                $scope.categories[j-1].items++;
-              };
+        // The number of items in a category
+        for(var i = 0; i < $scope.categories.length; i++){
+          $scope.categories[i].items = 0;
+          $scope.categories[i].thumb = "./img/default.png"; // Default img
+          Item.query({category_id: $scope.categories[i].id}, function(items){
+            if (items.length) {
+              $scope.categories[items[0].category_id-1].items = items.length;
+              // The first image from the first item in the category.
+              Image.query({item_id: items[0].id}, function(images){
+                if(images.length){
+                  $scope.categories[items[0].category_id-1].thumb = RESOURCES.USERS_DOMAIN + images[0].uri;
+                }
+              })
             };
-          }
-        });
+          });
+        }
     });
     $scope.$broadcast('scroll.refreshComplete');
   } 
@@ -133,27 +177,27 @@ angular.module('starter.controllers', [])
 .controller('CategoryCtrl', function($scope, $stateParams, RESOURCES, Category, Item, Image) {
   $scope.categoryId = $stateParams.categoryId;
   $scope.category = {};
+  $scope.images = [];
 
   $scope.updateItems = function(){
-    Item.query(function(data) {
-      $scope.items = data;
-    });
-
-    Image.query(function(data){
-      $scope.images = [];
-      $scope.allImages = data;
-      for(var i=0; i<$scope.allImages.length; i++){
-        $scope.images.push({"item_id": $scope.allImages[i].item_id, "uri": RESOURCES.USERS_DOMAIN + $scope.allImages[i].uri});
-      };
+    $scope.images = [];
+    Item.query({category_id: $scope.categoryId}, function(items){
+      $scope.items = items;
+      for(var i = 0; i < $scope.items.length; i++){
+        $scope.images.push({"item_id": $scope.items[i].id, "uri": "./img/default.png"}); // Default img
+        Image.query({item_id: $scope.items[i].id}, function(images){
+          if (images.length) {
+            $scope.images.push({"item_id": images[0].item_id, "uri": RESOURCES.USERS_DOMAIN + images[0].uri});
+          }
+        })
+      }
     });
     $scope.$broadcast('scroll.refreshComplete');
   }
 
-
   $scope.$on('$ionicView.beforeEnter', function(event) {
     Category.get({id: $scope.categoryId}, function(category){
       $scope.category = category;
-      $scope.category = $scope.category;
     });
   });
 
@@ -163,25 +207,23 @@ angular.module('starter.controllers', [])
 .controller('ItemCtrl', function($scope, $stateParams, RESOURCES, Item, Image) {
   $scope.categoryId = $stateParams.categoryId;
   $scope.itemId = $stateParams.itemId;
+  $scope.images = [];
 
   $scope.$on('$ionicView.beforeEnter', function(event) {
     Item.get({id: $scope.itemId}, function(item){
       $scope.item = item;
+      $scope.message = $scope.item.name;
     });
   });
 
   $scope.updateItem = function(){
     Item.get({id: $scope.itemId}, function(item){
       $scope.item = item;
+      $scope.message = $scope.item.name;
     });
-    Image.query(function(data){
-      $scope.images = [];
-      $scope.allImages = data;
-      for(var i=0; i<$scope.allImages.length; i++){
-        if ($scope.allImages[i].item_id == $scope.itemId) {
-          console.log($scope.allImages[i].uri);
-          $scope.images.push(RESOURCES.USERS_DOMAIN + $scope.allImages[i].uri);
-        };
+    Image.query({item_id: $scope.itemId}, function(images){
+      for(var i=0; i<images.length; i++){
+        $scope.images.push(RESOURCES.USERS_DOMAIN + images[i].uri);
       };
     });
     $scope.$broadcast('scroll.refreshComplete');
@@ -190,27 +232,65 @@ angular.module('starter.controllers', [])
   $scope.updateItem();
 })
 
-.controller('FavouritesCtrl', function($scope, Item) {
+.controller('FavouritesCtrl', function($scope, RESOURCES, Item, Image) {
   $scope.updateItems = function(){
-    Item.query(function(data) {
-      $scope.items = data;
+    $scope.images = [];
+    Item.query(function(items){
+      $scope.items = items;
+      for(var i = 0; i < $scope.items.length; i++){
+        $scope.images.push({"item_id": $scope.items[i].id, "uri": "./img/default.png"}); // Default img
+        Image.query({item_id: $scope.items[i].id}, function(images){
+          if (images.length) {
+            $scope.images.push({"item_id": images[0].item_id, "uri": RESOURCES.USERS_DOMAIN + images[0].uri});
+          }
+        })
+      }
     });
     $scope.$broadcast('scroll.refreshComplete');
   }
-
   $scope.updateItems();
 })
 
+.controller('RandomCtrl', function($scope, RESOURCES, Item, Image) {
+  $scope.message = "other random item";
+  $scope.updateItem = function(){
+    $scope.images = [];
+    Item.query(function(items){
+      $scope.item = items[Math.floor(Math.random() * items.length)];
+      Image.query({item_id: $scope.item.id}, function(images){
+        for(var i=0; i<images.length; i++){
+          $scope.images.push(RESOURCES.USERS_DOMAIN + images[i].uri);
+        };
+      });
+    });
+    $scope.$broadcast('scroll.refreshComplete');
+  }
+  $scope.updateItem();
+})
+
+.controller('FileCtrl', function($rootScope, $scope) {
+  $scope.images = [];
+  $scope.addImage = function(){
+    var file = $scope.myFile; //name supported by new directive
+    if (file) {
+      $rootScope.images.push(file);
+      $scope.myFile = "";
+      $scope.images = $rootScope.images;
+    };
+  }
+
+  $scope.removeImage = function(index){
+    $rootScope.images.splice(index,1);
+    $scope.images = $rootScope.images;
+  }
+})
+
 //, [ '$scope', '$cordovaCamera', '$cordovaFile', '$cordovaCapture', '$ionicPopup', '$sce', 'Category', 'Item', 'fileUpload', function($scope, $cordovaCamera, $cordovaFile, $cordovaCapture, $ionicPopup, $sce, Category, Item, fileUpload) {
-.controller('UploadCtrl', function($scope, $cordovaCamera, $cordovaFile, $cordovaCapture, $ionicPopup, $sce, RESOURCES, Category, Item, fileUpload) {
+.controller('UploadCtrl', [ '$rootScope', '$scope', '$cordovaCamera', '$cordovaFile', '$cordovaCapture', '$ionicPopup', 'RESOURCES', 'Category', 'Item', 'fileUpload', function($rootScope, $scope, $cordovaCamera, $cordovaFile, $cordovaCapture, $ionicPopup, RESOURCES, Category, Item, fileUpload) {
   $scope.itemDetails = {};
   $scope.categoryDetails = {};
   $scope.images = [];
   $scope.data = {};
-  $scope.videoURL = $sce.trustAsResourceUrl("http://www.w3schools.com/html/mov_bbb.mp4");
-  $scope.images.push('http://lorempixel.com/output/animals-q-c-300-300-8.jpg');
-  $scope.images.push('http://lorempixel.com/output/animals-q-c-300-300-1.jpg');
-  $scope.images.push('http://lorempixel.com/output/animals-q-c-300-300-2.jpg');
 
   Category.query(function(data) {
     $scope.categories = data;
@@ -309,7 +389,9 @@ angular.module('starter.controllers', [])
     }
     if (!noSubmit) {
       $scope.showConfirmCategory();
-    }    
+    }else{
+      $scope.showAlert();
+    }
   }
 
   $scope.showConfirmCategory = function() {
@@ -327,6 +409,15 @@ angular.module('starter.controllers', [])
     });
   };
 
+  $scope.showAlert = function(){
+    var alertPopup = $ionicPopup.alert({
+      title: 'Can\'t upload',
+      template: 'Data required'
+    });
+      alertPopup.then(function(res) {
+    });
+  }
+
   $scope.checkValidityItem = function(category){
     var noSubmit = false;
     if ($scope.itemDetails.name == "" || !angular.isString($scope.itemDetails.name)){
@@ -335,11 +426,12 @@ angular.module('starter.controllers', [])
       noSubmit = true;
     }
     $scope.itemDetails.category_id = $scope.data.category.id;    
-    //$scope.images;
     $scope.itemDetails.video = $scope.videoURL;
     if (!noSubmit) {
       $scope.showConfirmItem();
-    }    
+    }else{
+      $scope.showAlert();
+    }
   }
 
   $scope.showConfirmItem = function() {
@@ -351,21 +443,28 @@ angular.module('starter.controllers', [])
       if(res) {
         console.log('You are sure');
         Item.add({}, $scope.itemDetails);
+        $scope.uploadFile();
       } else {
         console.log('You are not sure');
       }
     });
-    $scope.uploadFile();
   };
 
   $scope.uploadFile = function(){
-    var file = $scope.myFile; //name supported by new directive
     var uploadUrl = RESOURCES.IMAGES; //config URL
-    console.log('file is ' + JSON.stringify(file) + "  @"+uploadUrl);
-    //fileUpload.uploadFileToUrl(file, uploadUrl, image);
+    Item.query({category_id: $scope.itemDetails.category_id}, function(items){
+      $scope.imageDetails = {};
+      $scope.imageDetails.item_id = items[items.length-1].id;
+      for(var i = 0; i < $rootScope.images.length; i++){
+        var file = $rootScope.images[i];
+        $scope.imageDetails.name = $scope.imageDetails.label = file.name;
+        var image = $scope.imageDetails;
+        //console.log('file is ' + file +'-' +JSON.stringify(file) + "  @"+uploadUrl);
+        fileUpload.uploadFileToUrl(file, uploadUrl, image);
+      }
+    });    
   };
-
-})
+}])
 
 .controller('MediaCtrl', function($scope, $ionicModal, $sce) {
     $scope.data = {};

@@ -15,31 +15,7 @@
 				<label class="item item-input item-stacked-label">
 				    <span class="input-label">Description</span>
 					<textarea ng-model="categoryDetails.description"></textarea>
-				</label>
-
-				  <ion-scroll direction="x" class="item-horizontal-scroll" ng-controller="MediaCtrl">
-				  	<div class="div-inline" ng-repeat="image in images">
-				  		<img ng-src="{{image}}" ng-click="showImagesFullscreen($index)"/>
-				  		<input type="file" file-model="myFile"/>
-					  	<a class="button button-icon icon ion-close button-assertive button-clear" ng-click="deleteImage($index)"></a>
-					  	<p ng-hide="true">{{image}}</p>
-				    </div>
-				  </ion-scroll>
-
-				<div class="row">
-					<div class="col">
-						<button ng-click="captureImage()" class="button button-stable button-block">
-							<i class="icon ion-android-camera"></i>
-							Photo
-					    </button>
-					</div>
-					<div class="col">
-						<button ng-click="getImage()" class="button button-stable button-block">
-							<i class="icon ion-android-image"></i>
-							Gallery
-					    </button>
-					</div>
-				</div>
+				</label>				
 				
 				<button type="submit" ng-click="checkValidityCategory()" class="button button-full button-positive">
 					Create
@@ -52,7 +28,6 @@
 
 	  <ion-tab title="Item" icon="ion-document-text">
 
-	    
 	  	<!-- Upload item -->
 	  	<ion-view view-title="Item">
 		  	<ion-content>
@@ -79,6 +54,24 @@
 					  	<p ng-hide="true">{{image}}</p>
 				    </div>
 				  </ion-scroll>
+
+				<div ng-controller="FileCtrl">
+					<div class="row">
+						<div class="col file-upload">
+							<input type="file" file-model="myFile" accept="image/*">
+							<i class="button button-stable button-block icon ion-android-image"> Gallery</i>
+						</div>
+						<div class="col col padding-top">
+							<button class="button button-stable button-block icon ion-android-archive" ng-click="addImage()"> Save photo</button>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col">
+							<p ng-repeat="image in images" class="p-inline badge badge-positive">{{image.name}} <i class="icon ion-close-circled assertive" on-tap="removeImage($index)"></i></p>
+							<p class="p-inline badge badge-energized">{{myFile.name}}</p>
+						</div>
+					</div>
+				</div>
 
 				<div class="row">
 					<div class="col">

@@ -109,6 +109,16 @@ angular.module('starter', ['ionic', 'ngCordova', 'ngResource', 'starter.controll
     }
   })
 
+  .state('app.random', {
+    url: "/random",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/item.html",
+        controller: 'RandomCtrl'
+      }
+    }
+  })
+
   .state('app.upload', {
     url: "/upload",
     views: {

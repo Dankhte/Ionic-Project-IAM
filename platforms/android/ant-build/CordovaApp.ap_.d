@@ -63,6 +63,7 @@ C:\Users\Isma\Dropbox\Grado Superior 2n\DIW Ingles\Proyecto Ionic\final project\
 C:\Users\Isma\Dropbox\Grado Superior 2n\DIW Ingles\Proyecto Ionic\final project\finalProject\platforms\android\assets\www\plugins \
 C:\Users\Isma\Dropbox\Grado Superior 2n\DIW Ingles\Proyecto Ionic\final project\finalProject\platforms\android\assets\www\templates \
 C:\Users\Isma\Dropbox\Grado Superior 2n\DIW Ingles\Proyecto Ionic\final project\finalProject\platforms\android\assets\www\css\style.css \
+C:\Users\Isma\Dropbox\Grado Superior 2n\DIW Ingles\Proyecto Ionic\final project\finalProject\platforms\android\assets\www\img\default.png \
 C:\Users\Isma\Dropbox\Grado Superior 2n\DIW Ingles\Proyecto Ionic\final project\finalProject\platforms\android\assets\www\img\home_back.jpg \
 C:\Users\Isma\Dropbox\Grado Superior 2n\DIW Ingles\Proyecto Ionic\final project\finalProject\platforms\android\assets\www\js\app.js \
 C:\Users\Isma\Dropbox\Grado Superior 2n\DIW Ingles\Proyecto Ionic\final project\finalProject\platforms\android\assets\www\js\config.js \

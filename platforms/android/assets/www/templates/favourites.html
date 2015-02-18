@@ -2,11 +2,12 @@
   <ion-content>  	
     <ion-refresher pulling-text="Update favourite items" pulling-icon="ion-arrow-down-a" refreshing-text="Updating..." on-refresh="updateItems()"></ion-refresher>
 	<ion-list>
-	    <a class="item item-thumbnail-left" ng-repeat="item in items" ng-if="checkFavourite(item.id)" href="#/app/categories/{{categoryId}}/{{item.id}}">
-	    	<img ng-repeat="photo in item.gallery" src="{{photo}}"/>
-	    	<h2>{{item.name}}</h2>
+	    <ion-item class="item item-thumbnail-left" ng-repeat="item in items.slice().reverse()" ng-if="checkFavourite(item.id)" href="#/app/categories/{{categoryId}}/{{item.id}}">
+	    	<img ng-repeat="image in images | filter: {item_id: item.id}" ng-if="$last" ng-src="{{image.uri}}"/>
+	    	<h2 class="calm">{{item.name}}</h2>
 	    	<p>{{item.description}}</p>
-		</a>
+	    	<ion-option-button class="button-assertive" ng-click="addFavourite(item.id)">Remove</ion-option-button>
+		</ion-item>
 	</ion-list>
   </ion-content>
 </ion-view>

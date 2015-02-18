@@ -1,11 +1,11 @@
 <ion-view view-title="{{item.name}}">
   	<ion-content>  	
   		<ion-list>
-	   		<ion-refresher pulling-text="Update {{item.name}}" pulling-icon="ion-arrow-down-a" refreshing-text="Updating..." on-refresh="updateItem()"></ion-refresher>
+	   		<ion-refresher pulling-text="Update {{message}}" pulling-icon="ion-arrow-down-a" refreshing-text="Updating..." on-refresh="updateItem()"></ion-refresher>
 			<div class="list card">
 
 				<div class="item">
-				    <h2>{{item.name}}</h2>
+				    <h2 class="calm">{{item.name}}</h2>
 				</div>
 				<div class="item item-body">
 				    <ion-scroll direction="x" class="item-horizontal-scroll" ng-controller="MediaCtrl">
@@ -20,10 +20,10 @@
 				  	-->
 				    <p>{{item.description}}</p>
 				</div>
-				<div class="item tabs tabs-icon-left">
+				<div class="item item-footer tabs tabs-icon-left">
 				    <a class="tab-item" ng-click="addFavourite(item.id)">
-				    	<i ng-if="checkFavourite(item.id)" class="icon ion-ios-star"></i>
-				    	<i ng-if="!checkFavourite(item.id)" class="icon ion-ios-star-outline"></i>
+				    	<i ng-if="checkFavourite(item.id)" class="icon ion-android-star"></i>
+				    	<i ng-if="!checkFavourite(item.id)" class="icon ion-android-star-outline"></i>
 				    	Favourite
 				    </a>
 				</div>

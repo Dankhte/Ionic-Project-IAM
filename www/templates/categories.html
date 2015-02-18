@@ -2,14 +2,11 @@
   <ion-content>
   	<ion-refresher pulling-text="Update categories" pulling-icon="ion-arrow-down-a" refreshing-text="Updating..." on-refresh="updateCategories()"></ion-refresher>
     <ion-list>
-	    <ion-item class="item item-thumbnail-left" ng-repeat="category in categories" href="#/app/categories/{{category.id}}">
+	    <ion-item class="item item-thumbnail-left" ng-repeat="category in categories.slice().reverse()" href="#/app/categories/{{category.id}}">
 	    	<img ng-src="{{category.thumb}}">
-	    	<h2>{{category.name}}</h2>
+	    	<h2 class="positive">{{category.name}}</h2>
 	    	<p>{{category.description}}</p>
 	    	<p>{{category.items}} items</p>
-	    	<ion-option-button class="button-positive" ng-click="createCategory(category.id)">
-				Edit
-			</ion-option-button>
 		</ion-item>
     </ion-list>
   </ion-content>
